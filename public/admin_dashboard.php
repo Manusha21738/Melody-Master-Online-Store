@@ -6,6 +6,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     die("<div class='container mt-4 alert alert-danger'>Access Denied. Admins Only.</div>");
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_order'])) {
+    $order_id = (int)$_POST['order_id'];
+    $status = mysqli_real_escape_string($conn, $_POST['status']);
+    mysqli_query($conn, "UPDATE orders SET status = '$status' WHERE order_id = $order_id");
+    $alert_msg = "Order #$order_id status successfully updated to " . ucfirst($status) . "!";
+}
+
 // Stats
 $order_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM orders"))['c'];
 $revenue = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(total_amount) as s FROM orders"))['s'];
@@ -14,6 +21,9 @@ $low_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM p
 ?>
 
 <div class="container mt-4">
+    <?php if(isset($alert_msg)): ?>
+        <div class="alert alert-success" style="margin-bottom: 20px;"><?php echo $alert_msg; ?></div>
+    <?php endif; ?>
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2>Admin Dashboard</h2>
         <div>
@@ -50,6 +60,7 @@ $low_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM p
             <th style="padding: 10px;">Total</th>
             <th style="padding: 10px;">Status</th>
             <th style="padding: 10px;">Date</th>
+            <th style="padding: 10px;">Update Status</th>
         </tr>
         <?php
         $orders_query = "SELECT o.*, u.name FROM orders o JOIN users u ON o.user_id = u.user_id ORDER BY created_at DESC LIMIT 10";
@@ -60,8 +71,23 @@ $low_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM p
                 <td style="padding: 10px;">#<?php echo $o['order_id']; ?></td>
                 <td style="padding: 10px;"><?php echo htmlspecialchars($o['name']); ?></td>
                 <td style="padding: 10px;">Rs. <?php echo number_format($o['total_amount'], 2); ?></td>
-                <td style="padding: 10px;"><?php echo ucfirst($o['status']); ?></td>
+                <td style="padding: 10px;">
+                    <span style="display:inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; background: <?php echo $o['status'] == 'completed' ? '#dcfce7' : ($o['status'] == 'cancelled' ? '#fee2e2' : '#fef3c7'); ?>; color: <?php echo $o['status'] == 'completed' ? '#166534' : ($o['status'] == 'cancelled' ? '#991b1b' : '#92400e'); ?>; font-weight:600;">
+                        <?php echo ucfirst($o['status']); ?>
+                    </span>
+                </td>
                 <td style="padding: 10px;"><?php echo $o['created_at']; ?></td>
+                <td style="padding: 10px;">
+                    <form method="POST" action="" style="display:flex; gap:10px; align-items: center;">
+                        <input type="hidden" name="order_id" value="<?php echo $o['order_id']; ?>">
+                        <select name="status" class="form-control" style="padding: 5px; width: 120px;">
+                            <option value="pending" <?php echo $o['status'] == 'pending' ? 'selected' : ''; ?>>Pending</option>
+                            <option value="completed" <?php echo $o['status'] == 'completed' ? 'selected' : ''; ?>>Completed</option>
+                            <option value="cancelled" <?php echo $o['status'] == 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+                        </select>
+                        <button type="submit" name="update_order" class="btn" style="padding: 6px 12px; font-size: 0.8rem;">Save</button>
+                    </form>
+                </td>
             </tr>
         <?php endwhile; ?>
     </table>
