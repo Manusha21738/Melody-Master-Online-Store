@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../config/db.php';
 include 'includes/header.php';
 
@@ -50,8 +50,8 @@ if (!empty($_SESSION['cart'])) {
     }
 }
 
-// Shipping Rule: > £100 Free, else £10
-$shipping = ($subtotal > 100) ? 0 : 10;
+// Shipping Rule: > Rs. 15,000 Free, else Rs. 500
+$shipping = ($subtotal > 15000) ? 0 : 500;
 if ($subtotal == 0) $shipping = 0;
 $total = $subtotal + $shipping;
 ?>
@@ -79,9 +79,9 @@ $total = $subtotal + $shipping;
                             <strong><?php echo htmlspecialchars($item['name']); ?></strong>
                             <?php if($item['is_digital']) echo " <span style='color:blue; font-size:0.8em;'>(Digital)</span>"; ?>
                         </td>
-                        <td style="padding: 10px;">£<?php echo number_format($item['price'], 2); ?></td>
+                        <td style="padding: 10px;">Rs. <?php echo number_format($item['price'], 2); ?></td>
                         <td style="padding: 10px;"><?php echo $item['qty']; ?></td>
-                        <td style="padding: 10px;">£<?php echo number_format($item['line_total'], 2); ?></td>
+                        <td style="padding: 10px;">Rs. <?php echo number_format($item['line_total'], 2); ?></td>
                         <td style="padding: 10px;">
                             <form method="POST" action="cart.php" style="display:inline;">
                                 <input type="hidden" name="action" value="remove">
@@ -96,10 +96,10 @@ $total = $subtotal + $shipping;
 
         <div style="display: flex; justify-content: flex-end;">
             <div style="width: 300px; padding: 20px; background: #f9f9f9; border-radius: 5px;">
-                <p style="display: flex; justify-content: space-between;"><span>Subtotal:</span> <span>£<?php echo number_format($subtotal, 2); ?></span></p>
-                <p style="display: flex; justify-content: space-between;"><span>Shipping:</span> <span>£<?php echo number_format($shipping, 2); ?></span></p>
+                <p style="display: flex; justify-content: space-between;"><span>Subtotal:</span> <span>Rs. <?php echo number_format($subtotal, 2); ?></span></p>
+                <p style="display: flex; justify-content: space-between;"><span>Shipping:</span> <span>Rs. <?php echo number_format($shipping, 2); ?></span></p>
                 <hr>
-                <h3 style="display: flex; justify-content: space-between;"><span>Total:</span> <span>£<?php echo number_format($total, 2); ?></span></h3>
+                <h3 style="display: flex; justify-content: space-between;"><span>Total:</span> <span>Rs. <?php echo number_format($total, 2); ?></span></h3>
                 <a href="checkout.php" class="btn" style="display: block; text-align: center; margin-top: 15px;">Proceed to Checkout</a>
             </div>
         </div>
@@ -107,3 +107,4 @@ $total = $subtotal + $shipping;
 </div>
 
 <?php include 'includes/footer.php'; ?>
+

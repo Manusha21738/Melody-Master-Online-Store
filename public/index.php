@@ -1,4 +1,7 @@
-<?php
+﻿<?php
+// Melody Masters Online Store - Main Entry Point
+// Reference: Code structured based on MVC/Include best practices taught in Lectures.
+// CSS layout techniques (Grid/Flexbox) heavily inspired by modern web design standards.
 require_once '../config/db.php';
 include 'includes/header.php';
 
@@ -47,7 +50,7 @@ $prod_result = mysqli_query($conn, $prod_query);
                 <?php endif; ?>
                 <div class="card-body">
                     <h5 class="card-title"><?php echo htmlspecialchars($prod['name']); ?></h5>
-                    <span class="price">£<?php echo number_format($prod['price'], 2); ?></span>
+                    <span class="price">Rs. <?php echo number_format($prod['price'], 2); ?></span>
                     <a href="product.php?id=<?php echo $prod['product_id']; ?>" class="btn">View Details</a>
                 </div>
             </div>
@@ -56,3 +59,4 @@ $prod_result = mysqli_query($conn, $prod_query);
 </section>
 
 <?php include 'includes/footer.php'; ?>
+

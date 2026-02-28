@@ -1,4 +1,7 @@
-<?php
+﻿<?php
+// Melody Masters Online Store - Shop Page
+// Business Rule: Organizes products into categories and supports filtering.
+// Note: Responsive web design principles utilized for product grid.
 require_once '../config/db.php';
 include 'includes/header.php';
 
@@ -49,7 +52,7 @@ $cat_result = mysqli_query($conn, $cat_query);
                             <img src="<?php echo $prod['image_url'] ? htmlspecialchars($prod['image_url']) : 'assets/images/placeholder.jpg'; ?>" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($prod['name']); ?></h5>
-                                <span class="price">£<?php echo number_format($prod['price'], 2); ?></span>
+                                <span class="price">Rs. <?php echo number_format($prod['price'], 2); ?></span>
                                 <a href="product.php?id=<?php echo $prod['product_id']; ?>" class="btn" style="width:100%; text-align:center;">View Details</a>
                             </div>
                         </div>
@@ -63,3 +66,4 @@ $cat_result = mysqli_query($conn, $cat_query);
 </div>
 
 <?php include 'includes/footer.php'; ?>
+

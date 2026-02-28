@@ -1,6 +1,6 @@
     <footer>
         <div class="container">
-            <p>&copy; <?php echo date('Y'); ?> Melody Masters Instrument Shop. All Rights Reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> Melody Masters Instrument Shop. All Rights Reserved. @Manusha Denuwan 2026</p>
         </div>
     </footer>
 </body>

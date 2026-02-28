@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../config/db.php';
 // We need to start session before header redirect check, but header include starts session too.
 // We'll check login manually first.
@@ -123,21 +123,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php foreach($cart_items as $item): ?>
                         <tr>
                             <td><?php echo $item['name']; ?> x <?php echo $item['qty']; ?></td>
-                            <td class="text-right">£<?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
+                            <td class="text-right">Rs. <?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
                         </tr>
                     <?php endforeach; ?>
                     <tr><td colspan="2"><hr></td></tr>
                     <tr>
                         <td>Subtotal</td>
-                        <td class="text-right">£<?php echo number_format($subtotal, 2); ?></td>
+                        <td class="text-right">Rs. <?php echo number_format($subtotal, 2); ?></td>
                     </tr>
                     <tr>
                         <td>Shipping</td>
-                        <td class="text-right">£<?php echo number_format($shipping, 2); ?></td>
+                        <td class="text-right">Rs. <?php echo number_format($shipping, 2); ?></td>
                     </tr>
                     <tr>
                         <td><strong>Total</strong></td>
-                        <td class="text-right"><strong>£<?php echo number_format($total, 2); ?></strong></td>
+                        <td class="text-right"><strong>Rs. <?php echo number_format($total, 2); ?></strong></td>
                     </tr>
                 </table>
             </div>
@@ -146,3 +146,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <?php include 'includes/footer.php'; ?>
+

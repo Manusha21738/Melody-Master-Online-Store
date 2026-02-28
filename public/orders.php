@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../config/db.php';
 include 'includes/header.php';
 
@@ -26,7 +26,7 @@ $result = mysqli_query($conn, $query);
                         <span><strong>Order #<?php echo $order['order_id']; ?></strong></span>
                         <span>Date: <?php echo $order['created_at']; ?></span>
                         <span>Status: <?php echo ucfirst($order['status']); ?></span>
-                        <span>Total: <strong>£<?php echo number_format($order['total_amount'], 2); ?></strong></span>
+                        <span>Total: <strong>Rs. <?php echo number_format($order['total_amount'], 2); ?></strong></span>
                     </div>
                     
                     <div style="margin-top: 15px;">
@@ -40,7 +40,7 @@ $result = mysqli_query($conn, $query);
                                 <tr>
                                     <td style="padding: 5px;"><?php echo htmlspecialchars($item['name']); ?></td>
                                     <td style="padding: 5px;">x <?php echo $item['quantity']; ?></td>
-                                    <td style="padding: 5px;">£<?php echo number_format($item['price'], 2); ?></td>
+                                    <td style="padding: 5px;">Rs. <?php echo number_format($item['price'], 2); ?></td>
                                     <td style="padding: 5px;">
                                         <?php if($item['is_digital']): ?>
                                             <a href="download.php?file=<?php echo urlencode($item['file_path']); ?>" class="btn btn-secondary" style="padding: 2px 8px; font-size: 0.8rem;">Download</a>
@@ -59,3 +59,4 @@ $result = mysqli_query($conn, $query);
 </div>
 
 <?php include 'includes/footer.php'; ?>
+

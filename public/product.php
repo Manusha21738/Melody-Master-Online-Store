@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../config/db.php';
 include 'includes/header.php';
 
@@ -15,29 +15,28 @@ if (!$product) {
 ?>
 
 <div class="container mt-4">
-    <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+    <div class="product-details">
         <!-- Product Image -->
-        <div style="flex: 1; min-width: 300px;">
-            <img src="<?php echo $product['image_url'] ? htmlspecialchars($product['image_url']) : 'assets/images/placeholder.jpg'; ?>" 
-                 style="width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <div class="product-image-container">
+            <img src="<?php echo $product['image_url'] ? htmlspecialchars($product['image_url']) : 'assets/images/placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
         </div>
 
         <!-- Product Details -->
-        <div style="flex: 1; min-width: 300px;">
+        <div class="product-info-container">
             <h1><?php echo htmlspecialchars($product['name']); ?></h1>
-            <p class="price" style="font-size: 2rem;">£<?php echo number_format($product['price'], 2); ?></p>
+            <p class="price">Rs. <?php echo number_format($product['price'], 2); ?></p>
             
             <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
             
-            <div style="margin: 20px 0; padding: 15px; background: #eee; border-radius: 5px;">
+            <div style="margin: 20px 0;">
                 <?php if($product['stock_quantity'] > 0): ?>
-                    <span style="color: green; font-weight: bold;">In Stock (<?php echo $product['stock_quantity']; ?> available)</span>
+                    <span class="stock-status in-stock">In Stock (<?php echo $product['stock_quantity']; ?> available)</span>
                 <?php else: ?>
-                    <span style="color: red; font-weight: bold;">Out of Stock</span>
+                    <span class="stock-status out-of-stock">Out of Stock</span>
                 <?php endif; ?>
                 
                 <?php if($product['is_digital']): ?>
-                    <br><span style="color: blue;">Digital Download Product</span>
+                    <span class="stock-status digital-badge">Digital Download Product</span>
                 <?php endif; ?>
             </div>
 
@@ -59,23 +58,66 @@ if (!$product) {
     <div class="mt-4">
         <h3>Customer Reviews</h3>
         <hr>
+        
+        <?php
+        // [Business Rule]: The system shall allow verified customers to submit product reviews.
+        // We verify purchase by checking the orders table for this user and product.
+        $can_review = false;
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            $check_query = "SELECT COUNT(*) as count FROM order_items oi JOIN orders o ON oi.order_id = o.order_id WHERE o.user_id = $user_id AND oi.product_id = $id";
+            $check_result = mysqli_query($conn, $check_query);
+            if ($check_result) {
+                $check_row = mysqli_fetch_assoc($check_result);
+                if ($check_row['count'] > 0) {
+                    $can_review = true;
+                }
+            }
+        }
+        ?>
+
+        <?php if($can_review): ?>
+            <div class="card card-body mb-4" style="background-color: #fcfcfc;">
+                <h4>Leave a Review</h4>
+                <form action="review.php" method="POST">
+                    <input type="hidden" name="product_id" value="<?php echo $id; ?>">
+                    <div class="form-group">
+                        <label>Rating:</label>
+                        <select name="rating" class="form-control" style="width: auto; min-width: 150px;">
+                            <option value="5">5 ˜…˜…˜…˜…˜… (Excellent)</option>
+                            <option value="4">4 ˜…˜…˜…˜…˜† (Good)</option>
+                            <option value="3">3 ˜…˜…˜…˜†˜† (Average)</option>
+                            <option value="2">2 ˜…˜…˜†˜†˜† (Poor)</option>
+                            <option value="1">1 ˜…˜†˜†˜†˜† (Terrible)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Comment:</label>
+                        <textarea name="comment" class="form-control" rows="3" required placeholder="Write your experience here..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Submit Review</button>
+                </form>
+            </div>
+        <?php endif; ?>
+
         <?php
         $rev_query = "SELECT r.*, u.name FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE product_id = $id ORDER BY created_at DESC";
         $rev_result = mysqli_query($conn, $rev_query);
         if(mysqli_num_rows($rev_result) > 0) {
             while($review = mysqli_fetch_assoc($rev_result)) {
-                echo "<div class='card card-body mb-4'>";
-                echo "<strong>" . htmlspecialchars($review['name']) . "</strong> ";
-                echo str_repeat("★", $review['rating']) . str_repeat("☆", 5 - $review['rating']);
-                echo "<p>" . htmlspecialchars($review['comment']) . "</p>";
-                echo "<small  class='text-muted'>" . $review['created_at'] . "</small>";
+                echo "<div class='review-card'>";
+                echo "<strong>" . htmlspecialchars($review['name']) . "</strong><br>";
+                echo "<span class='stars'>" . str_repeat("˜…", $review['rating']) . str_repeat("˜†", 5 - $review['rating']) . "</span>";
+                echo "<p style='margin-top: 10px;'>" . htmlspecialchars($review['comment']) . "</p>";
+                echo "<small style='color: #94a3b8; font-size: 0.85rem;'>" . date('F j, Y, g:i a', strtotime($review['created_at'])) . "</small>";
                 echo "</div>";
             }
         } else {
-            echo "<p>No reviews yet.</p>";
+            echo "<p>No reviews yet. Be the first to share your thoughts!</p>";
         }
         ?>
     </div>
 </div>
 
 <?php include 'includes/footer.php'; ?>
+

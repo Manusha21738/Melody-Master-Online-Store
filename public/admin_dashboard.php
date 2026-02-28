@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../config/db.php';
 include 'includes/header.php';
 
@@ -16,7 +16,10 @@ $low_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM p
 <div class="container mt-4">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2>Admin Dashboard</h2>
-        <a href="admin_products.php" class="btn">Add New Product</a>
+        <div>
+            <a href="admin_manage_products.php" class="btn btn-secondary">Manage Products</a>
+            <a href="admin_products.php" class="btn">Add New Product</a>
+        </div>
     </div>
     
     <div class="grid mt-4">
@@ -25,7 +28,7 @@ $low_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM p
             <p>Total Orders</p>
         </div>
         <div class="card card-body text-center" style="background: #e8f5e9;">
-            <h3>£<?php echo number_format($revenue ?? 0, 2); ?></h3>
+            <h3>Rs. <?php echo number_format($revenue ?? 0, 2); ?></h3>
             <p>Total Revenue</p>
         </div>
         <div class="card card-body text-center" style="background: #fff3e0;">
@@ -56,7 +59,7 @@ $low_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM p
             <tr style="border-bottom: 1px solid #ddd;">
                 <td style="padding: 10px;">#<?php echo $o['order_id']; ?></td>
                 <td style="padding: 10px;"><?php echo htmlspecialchars($o['name']); ?></td>
-                <td style="padding: 10px;">£<?php echo number_format($o['total_amount'], 2); ?></td>
+                <td style="padding: 10px;">Rs. <?php echo number_format($o['total_amount'], 2); ?></td>
                 <td style="padding: 10px;"><?php echo ucfirst($o['status']); ?></td>
                 <td style="padding: 10px;"><?php echo $o['created_at']; ?></td>
             </tr>
@@ -65,3 +68,4 @@ $low_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM p
 </div>
 
 <?php include 'includes/footer.php'; ?>
+

@@ -84,7 +84,7 @@ INSERT INTO categories (name, description) VALUES
 
 -- Insert Sample Products
 INSERT INTO products (name, description, price, stock_quantity, category_id, image_url, is_digital) VALUES 
-('Fender Stratocaster', 'Classic electric guitar with versatile sound.', 699.00, 10, 1, 'assets/images/guitar_sample.jpg', 0),
-('Yamaha P-45 Digital Piano', 'Compact and stylish digital piano.', 450.00, 5, 2, 'assets/images/piano_sample.jpg', 0),
-('Pearl Export Drum Kit', 'The best-selling drum set of all time.', 800.00, 3, 3, 'assets/images/drum_sample.jpg', 0),
-('Beethoven Symphony No. 9 Sheet Music', 'Full orchestral score in PDF format.', 15.00, 999, 7, 'assets/images/sheet_music_sample.jpg', 1);
+('Fender Stratocaster', 'Classic electric guitar with versatile sound.', 150000.00, 10, 1, 'assets/images/guitar_sample.jpg', 0),
+('Yamaha P-45 Digital Piano', 'Compact and stylish digital piano.', 125000.00, 5, 2, 'assets/images/piano_sample.jpg', 0),
+('Pearl Export Drum Kit', 'The best-selling drum set of all time.', 280000.00, 3, 3, 'assets/images/drum_sample.jpg', 0),
+('Beethoven Symphony No. 9 Sheet Music', 'Full orchestral score in PDF format.', 1500.00, 999, 7, 'assets/images/sheet_music_sample.jpg', 1);
